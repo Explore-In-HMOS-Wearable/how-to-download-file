@@ -1,7 +1,6 @@
-import { common } from '@kit.AbilityKit';
+import { common, wantAgent } from '@kit.AbilityKit';
 import { notificationManager } from '@kit.NotificationKit';
 import { createWantAgent, publishNotification, openNotificationPermission } from '../common/utils/NotificationUtil';
-import { getStringByRes } from '../common/utils/ResourseUtil';
 import Logger from '../common/utils/Logger';
 import CommonConstants, { DOWNLOAD_STATUS } from '../common/constants/CommonConstants';
 import { backgroundTaskManager } from '@kit.BackgroundTasksKit';
@@ -15,7 +14,7 @@ struct Index {
   @State downloadStatus: number = DOWNLOAD_STATUS.INITIAL;
   @State downloadProgress: number = 0;
   private notificationTitle: string = '';
-  private wantAgentObj: object = new Object();
+  private wantAgentObj: object = {} as wantAgent.WantAgentInfo;
   private interval: number = -1;
   private isSupport: boolean = true;
 
@@ -94,7 +93,7 @@ struct Index {
 
   // Background Operations
   async start() {
-    this.notificationTitle = await getStringByRes($r('app.string.notification_title_download'), this);
+    this.notificationTitle = $r('app.string.notification_title_download').toString();
     this.downloadProgress = 0;
     this.downloadStatus = DOWNLOAD_STATUS.DOWNLOADING;
 
@@ -103,14 +102,14 @@ struct Index {
   }
 
   async resume() {
-    this.notificationTitle = await getStringByRes($r('app.string.notification_title_download'), this);
+    this.notificationTitle = $r('app.string.notification_title_download').toString();
     this.downloadStatus = DOWNLOAD_STATUS.DOWNLOADING;
     this.requestSuspend();
     this.download();
   }
 
   async pause() {
-    this.notificationTitle = await getStringByRes($r('app.string.notification_title_pause'), this);
+    this.notificationTitle = $r('app.string.notification_title_pause').toString();
     this.downloadStatus = DOWNLOAD_STATUS.PAUSE;
     clearInterval(this.interval);
     this.cancelSuspend();
@@ -131,7 +130,7 @@ struct Index {
     const reason = 'File downloading';
     try {
       const info = backgroundTaskManager.requestSuspendDelay(reason, () => {
-        Logger.warn('Transient task about to timeout.');
+        Logger.warn('⏱ Transient task about to timeout.');
         this.cancel();
       });
       this.requestId = info.requestId;
@@ -157,7 +156,7 @@ struct Index {
     this.interval = setInterval(async () => {
       if (this.downloadProgress >= CommonConstants.PROGRESS_TOTAL) {
         clearInterval(this.interval);
-        this.notificationTitle = await getStringByRes($r('app.string.notification_title_finish'), this);
+        this.notificationTitle = $r('app.string.notification_title_finish').toString();
         this.downloadStatus = DOWNLOAD_STATUS.FINISHED;
         this.cancelSuspend();
         Logger.info('Download finished.');

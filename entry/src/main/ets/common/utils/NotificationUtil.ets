@@ -61,9 +61,7 @@ export function publishNotification(progress: number, title: string, wantAgentOb
   });
 }
 
-/**
- * open notification permission
- */
+// Open notification permission
 export function openNotificationPermission(context: common.UIAbilityContext) {
   notificationManager.requestEnableNotification(context).then(() => {
     Logger.info('Enable notification success');
