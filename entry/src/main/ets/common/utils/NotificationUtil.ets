@@ -1,7 +1,7 @@
 import { common, wantAgent } from '@kit.AbilityKit';
 import { notificationManager } from '@kit.NotificationKit';
 import CommonConstants from '../constants/CommonConstants';
-import Logger from '../utils/Logger';
+import Logger from './Logger';
 
 /**
  * Obtains the WantAgent of an application.
@@ -66,6 +66,6 @@ export function openNotificationPermission(context: common.UIAbilityContext) {
   notificationManager.requestEnableNotification(context).then(() => {
     Logger.info('Enable notification success');
   }).catch((err: Error) => {
-    Logger.error('Enable notification failed because ' + JSON.stringify(err));
+    Logger.error(`Enable notification failed because ${JSON.stringify(err)}`);
   });
 }

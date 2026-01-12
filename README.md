@@ -1,6 +1,6 @@
 > **Note:** To access all shared projects, get information about environment setup, and view other guides, please visit [Explore-In-HMOS-Wearable Index](https://github.com/Explore-In-HMOS-Wearable/hmos-index).
 
-# How to make download simulation
+# Download Center
 
 **Download Center** is a HarmonyOS-based wearable application that simulates a file download process with background execution, transient task handling, and real-time progress notifications.
 
